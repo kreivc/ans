@@ -42750,20 +42750,53 @@ var hideOthers = function (originalTarget, parentNode, markerName) {
 "use strict";
 
 
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  Object.defineProperty(o, k2, {
+    enumerable: true,
+    get: function get() {
+      return m[k];
+    }
+  });
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
 };
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var react_1 = __webpack_require__(/*! @chakra-ui/react */ "./node_modules/@chakra-ui/react/dist/cjs/index.js");
+
+var react_2 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
 var App = function App() {
-  return react_1["default"].createElement("div", null, react_1["default"].createElement("p", null, "Init Ans 2"));
+  (0, react_2.useEffect)(function () {
+    localStorage.setItem("chakra-ui-color-mode", "light");
+  }, []);
+  return react_2["default"].createElement(react_1.Box, null, react_2["default"].createElement(react_1.Text, null, "Init Ans 2"), react_2["default"].createElement(react_1.Button, null, "Test"));
 };
 
 exports["default"] = App;
@@ -42797,9 +42830,7 @@ var App_1 = __importDefault(__webpack_require__(/*! ./components/App */ "./resou
 
 var react_2 = __webpack_require__(/*! @chakra-ui/react */ "./node_modules/@chakra-ui/react/dist/cjs/index.js");
 
-(0, react_dom_1.render)(react_1["default"].createElement(react_2.ChakraProvider, null, react_1["default"].createElement(react_2.ColorModeScript, {
-  initialColorMode: "light"
-}), react_1["default"].createElement(App_1["default"], null)), document.getElementById("app"));
+(0, react_dom_1.render)(react_1["default"].createElement(react_2.ChakraProvider, null, react_1["default"].createElement(App_1["default"], null)), document.getElementById("app"));
 
 /***/ }),
 
