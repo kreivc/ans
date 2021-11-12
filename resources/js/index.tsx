@@ -1,10 +1,12 @@
 import React from "react";
+import "./utils/global.css";
 import { render } from "react-dom";
-import App from "./components/App";
+import theme from "./utils/theme";
 import { ChakraProvider } from "@chakra-ui/react";
+import App from "./App";
 
 render(
-  <ChakraProvider>
+  <ChakraProvider theme={theme}>
     <App />
   </ChakraProvider>,
   document.getElementById("app")
