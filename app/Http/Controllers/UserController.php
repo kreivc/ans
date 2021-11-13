@@ -11,18 +11,19 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     public function register(Request $request){
-       
 
         $fields = $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|string',
-            'password' => 'required|string'
+            'password' => 'required|string',
+            'photo_profile' => 'required|string'
         ]);
 
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
-            'password' => bcrypt($fields['password'])
+            'password' => bcrypt($fields['password']),
+            'photo_profile' => $fields['photo_profile']
         ]);
 
         $token = $user->createToken('anstoken')->plainTextToken;
@@ -32,7 +33,7 @@ class UserController extends Controller
             'token' => $token
         ];
 
-        return response($response, 201);
+        return response($response, 200);
     }
 
     public function login(Request $request) {
@@ -56,7 +57,7 @@ class UserController extends Controller
             'token' => $token
         ];
 
-        return response($response, 201);
+        return response($response, 200);
     }
 
     public function logout(Request $request) {
