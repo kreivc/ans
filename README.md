@@ -11,7 +11,7 @@ Firstly, download the repository.
 Initialize freshly cloned repository.
 
     composer install
-    yarn
+    yarn --ignore-scripts
 
 When developing, you would need a running database only. Make sure your MySQL credentials match your local machine's database. Check `.env.example` for reference.
 
