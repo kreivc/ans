@@ -1,5 +1,4 @@
 ANS
-![Tests](https://github.com/kreivc/ans/actions/workflows/laravel-test.yml/badge.svg)
 ===
 This project is a q&a forum about anything tech-related.
 
