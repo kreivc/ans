@@ -16,7 +16,7 @@ class CreateAnswerImagesTable extends Migration
         Schema::create('answer_images', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('answer_id');
-            $table->foreign('answer_id')->references('id')->on('answers');
+            $table->foreign('answer_id')->references('id')->on('answers')->onUpdate('cascade')->onDelete('cascade');
             $table->string('image_url');
             $table->timestamps();
         });

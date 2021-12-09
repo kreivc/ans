@@ -15,9 +15,9 @@ class CreateQuestionTagsTable extends Migration
     {
         Schema::create('question_tags', function (Blueprint $table) {
             $table->unsignedBigInteger('question_id');
-            $table->foreign('question_id')->references('id')->on('questions');
+            $table->foreign('question_id')->references('id')->on('questions')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('tag_id');
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('tag_id')->references('id')->on('tags')->onUpdate('cascade')->onDelete('cascade');
 
             $table->primary(['question_id', 'tag_id']);
 

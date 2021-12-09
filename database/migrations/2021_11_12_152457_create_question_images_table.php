@@ -16,7 +16,7 @@ class CreateQuestionImagesTable extends Migration
         Schema::create('question_images', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('question_id');
-            $table->foreign('question_id')->references('id')->on('questions');
+            $table->foreign('question_id')->references('id')->on('questions')->onUpdate('cascade')->onDelete('cascade');
             $table->string('image_url');
             $table->timestamps();
         });
