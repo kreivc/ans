@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use App\Models\QuestionImage;
+use App\Models\QuestionTag;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -37,17 +39,35 @@ class QuestionController extends Controller
             'body' => $request->body
         ]);
 
-        if($request->question_images != null)
+        if($request->question_images != null){
             foreach ($request->question_images as $image) {
                 QuestionImage::create([
                     'question_id' => $newQuestion->id,
                     'image_url' => $image
                 ]);
             }
+        }
+
+        if($request->question_tags != null){
+            foreach ($request->question_tags as $question_tag) {
+                // cari apakah si tag udah pernah ada
+                $tag = Tag::where('tag_name','LIKE', $question_tag)->first();
+                if($tag == null){
+                    $tag = Tag::create([
+                        'tag_name' => $question_tag
+                    ]);
+                }
+                QuestionTag::create([
+                    'question_id' => $newQuestion->id,
+                    'tag_id' => $tag->id
+                ]);
+            }
+        }
 
         return response()->json([
             'question' => $newQuestion,
-            'images' => $request->question_images
+            'images' => $request->question_images,
+            'tags' => $request->question_tags
         ]);
     }
 
@@ -59,13 +79,14 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $question = Question::findOrFail($id);
-
-        $images = QuestionImage::where('question_id',$id)->get();
-
+        $question = Question::find($id);
+        $question->question_image;
+        $qts = $question->question_tag;
+        foreach ($qts as $qt) {
+            $qt->tag;
+        }
         return response()->json([
-            'question' => $question,
-            'images' => $images
+            'question' => $question
         ]);
     }
 
@@ -78,7 +99,6 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // return $request;
         $request->validate([
             'title' => 'required|string|min:5',
             'body' => 'required'
@@ -90,19 +110,42 @@ class QuestionController extends Controller
             'body' => $request->body
         ]);
 
-        if ($request->question_images != null)
+        //update images
+        if ($request->question_images != null){
             foreach ($request->question_images as $image) {
                 $image_obj = ((object)$image);
-                // return $image_id;
                 $oldImage = QuestionImage::find($image_obj->id);
                 $oldImage->image_url = $image_obj->image_url;
                 $oldImage->save();
             }
+        }
 
+        //update tags
+        if ($request->question_tags != null) {
+            QuestionTag::where('question_id',$id)->delete();
+            foreach ($request->question_tags as $question_tag) {
+                // cari apakah si tag udah pernah ada
+                $tag = Tag::where('tag_name', 'LIKE', $question_tag)->first();
+                if ($tag == null) {
+                    $tag = Tag::create([
+                        'tag_name' => $question_tag
+                    ]);
+                }
+                QuestionTag::create([
+                    'question_id' => $id,
+                    'tag_id' => $tag->id
+                ]);
+            }
+        }
+
+        $question->question_image;
+        $qts = $question->question_tag;
+        foreach ($qts as $qt) {
+            $qt->tag;
+        }
 
         return response()->json([
             'question' => $question,
-            'images' => QuestionImage::where('question_id',$id)->get()
         ]);
     }
 
