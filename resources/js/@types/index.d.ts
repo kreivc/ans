@@ -3,3 +3,5 @@ declare module "axios" {
     handlerEnabled: boolean;
   }
 }
+
+declare module "*.module.css";

@@ -7,9 +7,9 @@ import {
   Text,
   VStack,
   Input,
-  Checkbox,
   Button,
   Box,
+  Checkbox,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
@@ -83,7 +83,13 @@ const Login = () => {
             </FormControl>
           </GridItem>
           <GridItem colSpan={2}>
-            <Checkbox>Keep me logged in</Checkbox>
+            <Checkbox
+              defaultChecked={false}
+              onBlur={undefined}
+              checked={undefined}
+            >
+              Keep me logged in
+            </Checkbox>
           </GridItem>
           <GridItem colSpan={2}>
             <Button size="lg" w="full" type="submit" colorScheme="brand">
