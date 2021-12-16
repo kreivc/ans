@@ -30,7 +30,6 @@ export const login = createAsyncThunk(
     const res = await axios.post("/api/login", {
       ...creds,
     });
-    console.log(res);
     if (res.data.token !== null) {
       const serializedState = JSON.stringify({ user: res.data });
       localStorage.setItem("user", serializedState);
@@ -51,6 +50,9 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, action) => {
       state.data = action.payload;
+    });
+    builder.addCase(login.rejected, (state, action) => {
+      state.data = initialState.data;
     });
     builder.addCase(logout.fulfilled, (state) => {
       state.data = initialState.data;

@@ -15,8 +15,8 @@ import {
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useAppDispatch } from "../store/hooks";
+import { loading } from "../store/LoadingSlice";
 import { login, LoginProps } from "../store/UserSlice";
 
 const Login = () => {
@@ -32,8 +32,14 @@ const Login = () => {
   const handleSumbit = async (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
     const { payload } = await dispatch(login({ email, password }));
-    if (payload.message == "Failed to Fetch JSON Payload") {
-      localStorage.removeItem("user");
+    if (payload === undefined) {
+      //   dispatch(
+      //     loading({
+      //       title: "Credential Error!",
+      //       description: "Unable to login.",
+      //       status: "error",
+      //     })
+      //   );
       toast({
         title: "Credential Error!",
         description: "Unable to login.",
@@ -41,7 +47,15 @@ const Login = () => {
         duration: 5000,
         isClosable: true,
       });
+      return;
     } else {
+      //   dispatch(
+      //     loading({
+      //       title: "Login Success!",
+      //       description: "Successfully logged.",
+      //       status: "success",
+      //     })
+      //   );
       toast({
         title: "Login Success!",
         description: "Successfully logged.",
@@ -50,11 +64,6 @@ const Login = () => {
         isClosable: true,
       });
     }
-    // const res = await axios.post("/api/login", {
-    //   email,
-    //   password,
-    // });
-    // console.log(res);
     navigate("/");
   };
 
