@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 //public
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/question/search', [QuestionController::class, 'searchQuestion']);
 
 Route::get('/questions', [QuestionController::class, 'index']);
 Route::get('/question/{id}', [QuestionController::class, 'show']);

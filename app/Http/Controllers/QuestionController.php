@@ -7,6 +7,7 @@ use App\Models\QuestionImage;
 use App\Models\QuestionTag;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
@@ -161,5 +162,15 @@ class QuestionController extends Controller
         return response([
             'message' => 'delete question succesfully'
         ]);
+    }
+    public function searchQuestion(Request $request){
+        $data=Question::with(
+            ['user','question_tag'=>function($query){
+                return $query->with('tag');
+            }]
+        )->where('title','like','%'.$request->input('keyword').'%')->get();
+        return response()->json([
+            'question'=>$data
+        ],200);
     }
 }
