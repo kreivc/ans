@@ -10,33 +10,51 @@ import {
   Button,
   Box,
   Checkbox,
+  createStandaloneToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
-type LoginProps = {
-  email: String;
-  password: String;
-};
-
-const axios = require("axios");
+import axios from "axios";
+import { useAppDispatch } from "../store/hooks";
+import { login, LoginProps } from "../store/UserSlice";
 
 const Login = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [userData, setUserData] = useState<LoginProps>({
     email: "",
     password: "",
   });
   const { email, password }: LoginProps = userData;
+  const toast = createStandaloneToast();
 
   const handleSumbit = async (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
-    const res = await axios.post("/api/login", {
-      email,
-      password,
-    });
-    console.log(res);
+    const { payload } = await dispatch(login({ email, password }));
+    if (payload.message == "Failed to Fetch JSON Payload") {
+      localStorage.removeItem("user");
+      toast({
+        title: "Credential Error!",
+        description: "Unable to login.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Login Success!",
+        description: "Successfully logged.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    // const res = await axios.post("/api/login", {
+    //   email,
+    //   password,
+    // });
+    // console.log(res);
     navigate("/");
   };
 

@@ -16,24 +16,15 @@ class UserController extends Controller
             'name' => 'required|string',
             'email' => 'required|string',
             'password' => 'required|string',
+            'photo_profile' => 'required|string',
         ]);
 
-        if($request->photo_profile == null){
-            $user = User::create([
-                'name' => $fields['name'],
-                'email' => $fields['email'],
-                'password' => bcrypt($fields['password']),
-                'photo_profile' => null
-            ]);
-        }
-        else{
-            $user = User::create([
-                'name' => $fields['name'],
-                'email' => $fields['email'],
-                'password' => bcrypt($fields['password']),
-                'photo_profile' => $fields['photo_profile']
-            ]);
-        }
+        $user = User::create([
+            'name' => $fields['name'],
+            'email' => $fields['email'],
+            'password' => bcrypt($fields['password']),
+            'photo_profile' => $fields['photo_profile']
+        ]);
 
 
         $token = $user->createToken('anstoken')->plainTextToken;
