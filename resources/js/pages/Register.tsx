@@ -47,8 +47,7 @@ const Register = () => {
       password,
       photo_profile: `https://avatars.dicebear.com/api/initials/:${alias}.svg`,
     });
-    console.log(res);
-    navigate("/");
+    navigate("/login");
   };
 
   const handleChangeInput = (e: React.FormEvent<EventTarget>) => {

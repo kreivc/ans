@@ -11,7 +11,10 @@ import {
 import { AiOutlineSearch } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { RiShieldUserFill } from "react-icons/ri";
-const axios = require("axios");
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { logout, selectUser } from "../../store/UserSlice";
+import axios from "axios";
+import { FiLogOut } from "react-icons/fi";
 
 export default function Navbar() {
   const [search, setSearch] = useState("");
@@ -23,6 +26,9 @@ export default function Navbar() {
       state: { result: res.data, keyword: search },
     });
   };
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+  const isLogged = Object.keys(user).length !== 0;
 
   return (
     <Box py="2" borderBottomWidth={2} borderBottomColor={"gray.200"}>
@@ -63,15 +69,26 @@ export default function Navbar() {
               type="submit"
             />
           </InputGroup>
-          <Link to="/login">
+          {isLogged ? (
             <Button
               colorScheme="brand"
               cursor="pointer"
-              leftIcon={<RiShieldUserFill />}
+              leftIcon={<FiLogOut />}
+              onClick={() => dispatch(logout())}
             >
-              Login
+              Logout
             </Button>
-          </Link>
+          ) : (
+            <Link to="/login">
+              <Button
+                colorScheme="brand"
+                cursor="pointer"
+                leftIcon={<RiShieldUserFill />}
+              >
+                Login
+              </Button>
+            </Link>
+          )}
         </Flex>
       </Flex>
     </Box>
