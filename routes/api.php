@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -34,4 +35,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/question/create', [QuestionController::class, 'store']);
     Route::put('/question/update/{id}', [QuestionController::class, 'update']);
     Route::delete('/question/delete/{id}', [QuestionController::class, 'destroy']);
+    Route::get('/answer/show/{id}', [AnswerController::class, 'show']);
+    Route::post('/answer/create', [AnswerController::class, 'create']);
+    Route::put('/answer/update/{id}', [AnswerController::class, 'update']);
+    Route::delete('/answer/delete/{id}', [AnswerController::class, 'delete']);
 });
