@@ -12,17 +12,13 @@ class Question extends Model
     protected $fillable = [
         'user_id',
         'title',
+        'image_url',
         'body',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function question_image()
-    {
-        return $this->hasMany(QuestionImage::class);
     }
 
     public function answer()

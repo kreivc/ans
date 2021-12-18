@@ -15,10 +15,6 @@ class Answer extends Model
         'body',
     ];
 
-    public function answer_image(){
-        return $this->hasMany(AnswerImage::class);
-    }
-
     public function question()
     {
         return $this->belongsTo(Question::class);

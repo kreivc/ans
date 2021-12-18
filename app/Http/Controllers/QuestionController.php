@@ -37,17 +37,10 @@ class QuestionController extends Controller
         $newQuestion = Question::create([
             'user_id' => auth()->user()->id,
             'title' => $request->title,
-            'body' => $request->body
+            'body' => $request->body,
+            'image_url' => $request->image_url
         ]);
 
-        if($request->question_images != null){
-            foreach ($request->question_images as $image) {
-                QuestionImage::create([
-                    'question_id' => $newQuestion->id,
-                    'image_url' => $image
-                ]);
-            }
-        }
 
         if($request->question_tags != null){
             foreach ($request->question_tags as $question_tag) {
@@ -67,7 +60,6 @@ class QuestionController extends Controller
 
         return response()->json([
             'question' => $newQuestion,
-            'images' => $request->question_images,
             'tags' => $request->question_tags
         ]);
     }
@@ -108,18 +100,9 @@ class QuestionController extends Controller
         $question = Question::findOrFail($id);
         $question->update([
             'title' => $request->title,
-            'body' => $request->body
+            'body' => $request->body,
+            'image_url' => $request->image_url
         ]);
-
-        //update images
-        if ($request->question_images != null){
-            foreach ($request->question_images as $image) {
-                $image_obj = ((object)$image);
-                $oldImage = QuestionImage::find($image_obj->id);
-                $oldImage->image_url = $image_obj->image_url;
-                $oldImage->save();
-            }
-        }
 
         //update tags
         if ($request->question_tags != null) {
@@ -139,7 +122,6 @@ class QuestionController extends Controller
             }
         }
 
-        $question->question_image;
         $qts = $question->question_tag;
         foreach ($qts as $qt) {
             $qt->tag;
