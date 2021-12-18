@@ -70,16 +70,31 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    // public function show($id)
+    // {
+    //     $question = Question::find($id);
+    //     $question->question_image;
+    //     $qts = $question->question_tag;
+    //     foreach ($qts as $qt) {
+    //         $qt->tag;
+    //     }
+    //     return response()->json([
+    //         'question' => $question
+    //     ]);
+    // }
+
+    public function explore()
     {
-        $question = Question::find($id);
-        $question->question_image;
-        $qts = $question->question_tag;
-        foreach ($qts as $qt) {
-            $qt->tag;
-        }
+        $questions = Question::with(
+        ['user', 'question_tag' => function($query){
+            return $query->with('tag');
+        }])->get();
+        $tag = Tag::all();
+
+
         return response()->json([
-            'question' => $question
+            'questions' => $questions,
+            'tags' => $tag
         ]);
     }
 
@@ -146,11 +161,10 @@ class QuestionController extends Controller
         ]);
     }
     public function searchQuestion(Request $request){
-        $data=Question::with(
-            ['user','question_tag'=>function($query){
-                return $query->with('tag');
-            }]
-        )->where('title','like','%'.$request->input('keyword').'%')->get();
+        $data=Question::with(['user','question_tag'=>function($query){
+            return $query->with('tag');
+        }])->where('title','like','%'.$request->input('keyword').'%')->get();
+
         return response()->json([
             'question'=>$data
         ],200);

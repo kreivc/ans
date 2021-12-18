@@ -41,7 +41,7 @@ const Register = () => {
       ? (alias = image[0].charAt(0) + image[1].charAt(0))
       : (alias = image[0].charAt(0));
 
-    const res = await axios.post("/api/register", {
+    await axios.post("/api/register", {
       name,
       email,
       password,

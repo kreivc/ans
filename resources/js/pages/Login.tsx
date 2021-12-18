@@ -16,7 +16,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../store/hooks";
-import { loading } from "../store/LoadingSlice";
 import { login, LoginProps } from "../store/UserSlice";
 
 const Login = () => {
@@ -33,13 +32,6 @@ const Login = () => {
     e.preventDefault();
     const { payload } = await dispatch(login({ email, password }));
     if (payload === undefined) {
-      //   dispatch(
-      //     loading({
-      //       title: "Credential Error!",
-      //       description: "Unable to login.",
-      //       status: "error",
-      //     })
-      //   );
       toast({
         title: "Credential Error!",
         description: "Unable to login.",
@@ -49,13 +41,6 @@ const Login = () => {
       });
       return;
     } else {
-      //   dispatch(
-      //     loading({
-      //       title: "Login Success!",
-      //       description: "Successfully logged.",
-      //       status: "success",
-      //     })
-      //   );
       toast({
         title: "Login Success!",
         description: "Successfully logged.",

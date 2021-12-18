@@ -21,14 +21,25 @@ export default function Navbar() {
   const navigate = useNavigate();
   const searchSubmit = async (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
+    if (search === "") {
+      return;
+    }
     const res = await axios.post("/api/question/search?keyword=" + search);
     navigate("/search/result", {
       state: { result: res.data, keyword: search },
     });
   };
+
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const isLogged = Object.keys(user).length !== 0;
+
+  const exploreSsr = async () => {
+    const res = await axios.get("/api/question/explore");
+    navigate("/explore", {
+      state: { result: res.data },
+    });
+  };
 
   return (
     <Box py="2" borderBottomWidth={2} borderBottomColor={"gray.200"}>
@@ -47,8 +58,9 @@ export default function Navbar() {
             </Heading>
           </Link>
           <Flex color="#605C5C" gridGap={1}>
-            <Button variant="ghost">Home</Button>
-            <Button variant="ghost">Explore</Button>
+            <Button variant="ghost" onClick={exploreSsr}>
+              Explore
+            </Button>
             <Button variant="ghost">Top Users</Button>
             <Button variant="ghost">About Us</Button>
           </Flex>
