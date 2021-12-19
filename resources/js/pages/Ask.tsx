@@ -1,20 +1,71 @@
-import { Box, Button, Heading, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Heading,
+  VStack,
+  Input,
+  Image,
+} from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
 
 const Ask = () => {
+  const [file, setFile] = useState<any | null>();
   const editorRef = useRef<any>(null);
   const log = () => {
     if (editorRef.current) {
       console.log(editorRef.current.getContent());
     }
   };
+
+  const ShowImage = () => {
+    const imageFile = window.URL.createObjectURL(file[0]);
+    return <Image src={imageFile} alt="img preview" />;
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("image", file[0]);
+    const upload = await axios
+      .post("https://api.imgur.com/3/image", {
+        formData,
+        headers: {
+          Authorization: "CLient-ID 3e28a194c9022ae",
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res: any) => res.json())
+      .then((res) => {
+        console.log("success", res.link);
+      })
+      .catch((err) => {
+        console.log("Upload failed");
+      });
+    console.log("finish", upload);
+  };
+
   return (
     <VStack justifyContent="flex-start">
       <Heading fontSize="3xl" color="black" py={2}>
         Ask a Question
       </Heading>
+      <Box>{file && <ShowImage />}</Box>
+      <FormControl as="form" onSubmit={handleSubmit}>
+        <FormLabel htmlFor="image">+</FormLabel>
+        <Input
+          id="image"
+          type="file"
+          d="none"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setFile(e.target.files)
+          }
+        />
+        <Button type="submit">Submit</Button>
+      </FormControl>
       <Box>
         <Editor
           apiKey="hqszmtu5zxgdxmnelmwel30majicpz2iauxla23b0rewystb"
@@ -40,7 +91,7 @@ const Ask = () => {
               const formData = new FormData();
               formData.append("image", blobInfo.blob(), blobInfo.filename());
               const upload = await axios
-                .post("https://api.imgur.com/3/upload", {
+                .post("https://api.imgur.com/3/image", {
                   formData,
                   headers: {
                     Authorization: "CLient-ID 3e28a194c9022ae",
