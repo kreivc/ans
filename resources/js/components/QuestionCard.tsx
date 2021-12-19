@@ -1,5 +1,17 @@
-import { Box, Flex, Heading, Image, Tag, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  IconButton,
+  Image,
+  Tag,
+  Text,
+} from "@chakra-ui/react";
 import React from "react";
+import { useAppSelector } from "../store/hooks";
+import { selectUser } from "../store/UserSlice";
+import { BiEdit, BiTrash } from "react-icons/bi";
 
 type UserPros = {
   created_at: Date;
@@ -25,6 +37,7 @@ type QuestionCardProps = {
 };
 
 export default function QuestionCard({ data }: { data: QuestionCardProps }) {
+  const user = useAppSelector(selectUser);
   return (
     <Box
       border="1px"
@@ -34,26 +47,34 @@ export default function QuestionCard({ data }: { data: QuestionCardProps }) {
       boxShadow="lg"
       rounded="md"
     >
-      <Flex alignItems="center">
-        <Image
-          borderRadius="full"
-          boxSize="30px"
-          src={data.user.photo_profile}
-          alt={data.user.name}
-        />
-        <Flex direction="column" px={4}>
-          <Text fontSize="lg" color="GrayText">
-            {data.user.name}
-          </Text>
-          <Text fontSize="xs" color="GrayText">
-            {new Date(data.created_at).toLocaleDateString("id-ID", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </Text>
+      <Flex alignItems="center" justifyContent="space-between">
+        <Flex alignItems="center">
+          <Image
+            borderRadius="full"
+            boxSize="30px"
+            src={data.user.photo_profile}
+            alt={data.user.name}
+          />
+          <Flex direction="column" px={4}>
+            <Text fontSize="lg" color="GrayText">
+              {data.user.name}
+            </Text>
+            <Text fontSize="xs" color="GrayText">
+              {new Date(data.created_at).toLocaleDateString("id-ID", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </Text>
+          </Flex>
         </Flex>
+        {user.user.id === data.user_id && (
+          <HStack spacing={2}>
+            <IconButton aria-label="Delete Question" icon={<BiTrash />} />
+            <IconButton aria-label="Edit Question" icon={<BiEdit />} />
+          </HStack>
+        )}
       </Flex>
       <Flex direction="column" px={10} py={2}>
         <Heading fontSize="3xl" color="black">

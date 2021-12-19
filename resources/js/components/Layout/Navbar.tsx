@@ -61,8 +61,10 @@ export default function Navbar() {
             <Button variant="ghost" onClick={exploreSsr}>
               Explore
             </Button>
-            <Button variant="ghost">Top Users</Button>
             <Button variant="ghost">About Us</Button>
+            <Button variant="ghost" onClick={() => navigate("/ask")}>
+              Ask
+            </Button>
           </Flex>
         </Flex>
         <Flex justify="flex-end" align="center" color="gray.400" gridGap="4">
