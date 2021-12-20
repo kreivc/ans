@@ -15,6 +15,9 @@ import axios from "axios";
 const Ask = () => {
   const [file, setFile] = useState<any | null>();
   const editorRef = useRef<any>(null);
+  const cloudname = "dor0udr7t";
+  const unsignedUploadPreset = "ansUUP";
+
   const log = () => {
     if (editorRef.current) {
       console.log(editorRef.current.getContent());
@@ -30,23 +33,34 @@ const Ask = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("image", file[0]);
-    const upload = await axios
-      .post("https://api.imgur.com/3/image", {
-        formData,
-        headers: {
-          Authorization: "CLient-ID 3e28a194c9022ae",
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res: any) => res.json())
-      .then((res) => {
-        console.log("success", res.link);
-      })
-      .catch((err) => {
-        console.log("Upload failed");
-      });
-    console.log("finish", upload);
+    const upload = await fetch("https://api.imgur.com/3/image/", {
+      method: "POST",
+      body: formData,
+      headers: {
+        Authorization: "Client-ID 3e28a194c9022ae",
+      },
+    });
+    const data = await upload.json();
+    console.log("finish", data);
   };
+
+  // const handleSubmit = async (e: any) => {
+  //   e.preventDefault();
+  //   const formData = new FormData();
+  //   formData.append("image", file[0]);
+  //   const upload = await axios
+  //     .post("https://api.imgur.com/3/image/", {
+  //       data: formData,
+  //       headers: {
+  //         Authorization: "Client-ID 3e28a194c9022ae",
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     });
+  //   console.log("finish", upload);
+  // };
 
   return (
     <VStack justifyContent="flex-start">
@@ -54,7 +68,7 @@ const Ask = () => {
         Ask a Question
       </Heading>
       <Box>{file && <ShowImage />}</Box>
-      <FormControl as="form" onSubmit={handleSubmit}>
+      <Box as="form" onSubmit={handleSubmit}>
         <FormLabel htmlFor="image">+</FormLabel>
         <Input
           id="image"
@@ -65,7 +79,7 @@ const Ask = () => {
           }
         />
         <Button type="submit">Submit</Button>
-      </FormControl>
+      </Box>
       <Box>
         <Editor
           apiKey="hqszmtu5zxgdxmnelmwel30majicpz2iauxla23b0rewystb"
@@ -87,32 +101,31 @@ const Ask = () => {
             content_style:
               "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
             images_upload_handler: async (blobInfo, success, failure) => {
-              console.log(blobInfo);
               const formData = new FormData();
-              formData.append("image", blobInfo.blob(), blobInfo.filename());
-              const upload = await axios
-                .post("https://api.imgur.com/3/image", {
-                  formData,
-                  headers: {
-                    Authorization: "CLient-ID 3e28a194c9022ae",
-                  },
-                })
-                .then((res: any) => res.json())
-                .then((res) => {
-                  success(res.link);
-                })
+              formData.append("file", blobInfo.blob(), blobInfo.filename());
+              formData.append("upload_preset", unsignedUploadPreset);
+              formData.append("cloud_name", cloudname);
+
+              const res = await fetch(
+                `https://api.cloudinary.com/v1_1/${cloudname}/image/upload`,
+                {
+                  method: "POST",
+                  body: formData,
+                }
+              )
+                .then((res) => res.json())
                 .catch((err) => {
-                  failure("Upload failed");
+                  failure("Upload failed", err);
                 });
-              console.log(upload);
+              success(res.secure_url);
             },
           }}
         />
       </Box>
-      <Box>
-        <Button onClick={log}>Log</Button>
-      </Box>
+      <Button onClick={log}>Log Data</Button>
+      {/* <Button type="submit">Submit</Button> */}
     </VStack>
   );
 };
+
 export default Ask;
