@@ -44,24 +44,6 @@ const Ask = () => {
     console.log("finish", data);
   };
 
-  // const handleSubmit = async (e: any) => {
-  //   e.preventDefault();
-  //   const formData = new FormData();
-  //   formData.append("image", file[0]);
-  //   const upload = await axios
-  //     .post("https://api.imgur.com/3/image/", {
-  //       data: formData,
-  //       headers: {
-  //         Authorization: "Client-ID 3e28a194c9022ae",
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //     });
-  //   console.log("finish", upload);
-  // };
-
   return (
     <VStack justifyContent="flex-start">
       <Heading fontSize="3xl" color="black" py={2}>
@@ -104,20 +86,24 @@ const Ask = () => {
               const formData = new FormData();
               formData.append("file", blobInfo.blob(), blobInfo.filename());
               formData.append("upload_preset", unsignedUploadPreset);
-              formData.append("cloud_name", cloudname);
+              formData.append("cloud_name", cloudname); // TODO: Exposed External API. Should be internalized.
 
-              const res = await fetch(
-                `https://api.cloudinary.com/v1_1/${cloudname}/image/upload`,
-                {
-                  method: "POST",
-                  body: formData,
+              try {
+                const res = await axios.post(
+                  `https://api.cloudinary.com/v1_1/${cloudname}/image/upload`,
+                  formData
+                );
+                success(res.data.secure_url);
+              } catch (err) {
+                if (typeof err === "string") {
+                  failure("Upload failed: " + err);
+                } else if (err instanceof Error) {
+                  failure("Upload failed: " + err.message);
+                } else {
+                  failure("Uplaod failed.");
+                  console.error(err);
                 }
-              )
-                .then((res) => res.json())
-                .catch((err) => {
-                  failure("Upload failed", err);
-                });
-              success(res.secure_url);
+              }
             },
           }}
         />
