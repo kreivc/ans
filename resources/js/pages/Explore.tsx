@@ -9,11 +9,11 @@ import {
 import { motion } from "framer-motion";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import QuestionCard from "../components/QuestionCard";
+import QuestionCard, { QuestionCardProps } from "../components/QuestionCard";
 
 const Explore = () => {
   const location = useLocation();
-  const allQuestion = location.state.result.questions;
+  const allQuestion = location.state.result.questions as QuestionCardProps[];
   const allTags = location.state.result.tags;
   const MotionBox = motion(Box);
 
@@ -37,9 +37,9 @@ const Explore = () => {
           Explore
         </Heading>
         {allQuestion ? (
-          allQuestion.map((data: any, id: any) => (
+          allQuestion.map((data, id) => (
             <Box key={id}>
-              <QuestionCard data={data} />
+              <QuestionCard {...data} />
             </Box>
           ))
         ) : (

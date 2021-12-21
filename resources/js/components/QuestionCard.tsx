@@ -13,7 +13,7 @@ import { useAppSelector } from "../store/hooks";
 import { selectUser } from "../store/UserSlice";
 import { BiEdit, BiTrash } from "react-icons/bi";
 
-type UserPros = {
+type User = {
   created_at: Date;
   email: string;
   email_verified_at?: string;
@@ -23,7 +23,7 @@ type UserPros = {
   updated_at: Date;
 };
 
-type QuestionCardProps = {
+export type QuestionCardProps = {
   body: string;
   created_at: Date;
   id: number;
@@ -32,12 +32,13 @@ type QuestionCardProps = {
   length: number;
   title: string;
   updated_at: Date;
-  user: UserPros;
+  user: User;
   user_id: number;
 };
 
-export default function QuestionCard({ data }: { data: QuestionCardProps }) {
+export default function QuestionCard(props: QuestionCardProps) {
   const user = useAppSelector(selectUser);
+  const isLogged = Object.keys(user).length !== 0;
   return (
     <Box
       border="1px"
@@ -52,15 +53,15 @@ export default function QuestionCard({ data }: { data: QuestionCardProps }) {
           <Image
             borderRadius="full"
             boxSize="30px"
-            src={data.user.photo_profile}
-            alt={data.user.name}
+            src={props.user.photo_profile}
+            alt={props.user.name}
           />
           <Flex direction="column" px={4}>
             <Text fontSize="lg" color="GrayText">
-              {data.user.name}
+              {props.user.name}
             </Text>
             <Text fontSize="xs" color="GrayText">
-              {new Date(data.created_at).toLocaleDateString("id-ID", {
+              {new Date(props.created_at).toLocaleDateString("id-ID", {
                 weekday: "long",
                 year: "numeric",
                 month: "long",
@@ -69,7 +70,7 @@ export default function QuestionCard({ data }: { data: QuestionCardProps }) {
             </Text>
           </Flex>
         </Flex>
-        {user.user.id === data.user_id && (
+        {isLogged && user.user.id === props.user_id && (
           <HStack spacing={2}>
             <IconButton aria-label="Delete Question" icon={<BiTrash />} />
             <IconButton aria-label="Edit Question" icon={<BiEdit />} />
@@ -78,14 +79,14 @@ export default function QuestionCard({ data }: { data: QuestionCardProps }) {
       </Flex>
       <Flex direction="column" px={10} py={2}>
         <Heading fontSize="3xl" color="black">
-          {data.title}
+          {props.title}
         </Heading>
         <Text fontSize="md" color="GrayText" py={1} isTruncated maxW="2xl">
-          {data.body}
+          {props.body}
         </Text>
         <Flex justifyItems="center" my={2}>
-          {data.question_tag
-            ? data.question_tag.map((question_tag: any, id: any) => (
+          {props.question_tag
+            ? props.question_tag.map((question_tag: any, id: any) => (
                 <Tag
                   fontSize="sm"
                   key={id}

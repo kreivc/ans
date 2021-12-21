@@ -21,8 +21,6 @@ const Ask = () => {
   const cloudname = "dor0udr7t";
   const unsignedUploadPreset = "ansUUP";
 
-  console.log(editorRef);
-
   const log = () => {
     if (editorRef.current) {
       console.log(editorRef.current.getContent());

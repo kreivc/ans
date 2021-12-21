@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
-import QuestionCard from "../components/QuestionCard";
+import QuestionCard, { QuestionCardProps } from "../components/QuestionCard";
 import { motion } from "framer-motion";
 
 export default function SearchResult() {
@@ -21,16 +21,17 @@ export default function SearchResult() {
         transition={{ duration: 1 }}
       >
         {location.state.result.question ? (
-          location.state.result.question.map((data: any, id: any) => (
-            <Box key={id} flexGrow={1}>
-              <QuestionCard data={data} />
-            </Box>
-          ))
+          location.state.result.question.map(
+            (data: QuestionCardProps, id: number) => (
+              <Box key={id} flexGrow={1}>
+                <QuestionCard {...data} />
+              </Box>
+            )
+          )
         ) : (
           <Text>No result found</Text>
         )}
       </MotionBox>
     </Flex>
-    // </Box>
   );
 }
