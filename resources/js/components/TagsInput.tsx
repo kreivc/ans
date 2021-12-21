@@ -57,7 +57,7 @@ export default function TagsInput({
       }
     }
 
-    if (e.key === "Backspace" && tags.length > 0) {
+    if (e.key === "Backspace" && tags.length > 0 && value === "") {
       const copyOfTags = [...tags];
       copyOfTags.pop();
       setTags(copyOfTags);
