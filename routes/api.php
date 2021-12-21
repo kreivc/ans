@@ -24,7 +24,7 @@ Route::post('/question/search', [QuestionController::class, 'searchQuestion']);
 Route::get('/question/explore', [QuestionController::class, 'explore']);
 
 Route::get('/questions', [QuestionController::class, 'index']);
-// Route::get('/question/{id}', [QuestionController::class, 'show']);
+Route::get('/question/{id}', [QuestionController::class, 'show']);
 
 //Authenticated
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

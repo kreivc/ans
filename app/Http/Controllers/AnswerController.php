@@ -9,7 +9,7 @@ class AnswerController extends Controller
 {
     public function show($id)
     {
-        $answer = Answer::all()->where('question_id', $id);
+        $answer = Answer::with(['user'])->where('question_id', $id)->get();
         return response()->json([
             'answer' => $answer
         ]);

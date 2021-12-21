@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import Ask from "./pages/Ask";
+import DetailQuestion from "./pages/DetailQuestion";
 import Explore from "./pages/Explore";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/search/result" element={<SearchResult />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/ask" element={<Ask />} />
+          <Route path="/question/:id" element={<DetailQuestion />} />
         </Routes>
       </Layout>
     </BrowserRouter>

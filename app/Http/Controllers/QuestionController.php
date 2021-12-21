@@ -70,18 +70,17 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // public function show($id)
-    // {
-    //     $question = Question::find($id);
-    //     $question->question_image;
-    //     $qts = $question->question_tag;
-    //     foreach ($qts as $qt) {
-    //         $qt->tag;
-    //     }
-    //     return response()->json([
-    //         'question' => $question
-    //     ]);
-    // }
+    public function show($id)
+    {
+        $question = Question::with(
+            ['question_tag'=>function($query){return $query->with('tag');},
+            'user',
+            'answer'=>function($query){return $query->with('user');}
+            ])->find($id);
+        return response()->json([
+            'question' => $question
+        ]);
+    }
 
     public function explore()
     {
