@@ -7,16 +7,21 @@ import {
   VStack,
   Input,
   Image,
+  Flex,
+  Tooltip,
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
+import { AiOutlinePlus } from "react-icons/ai";
 
 const Ask = () => {
-  const [file, setFile] = useState<any | null>();
+  const [file, setFile] = useState<FileList | null>(null);
   const editorRef = useRef<any>(null);
   const cloudname = "dor0udr7t";
   const unsignedUploadPreset = "ansUUP";
+
+  console.log(editorRef);
 
   const log = () => {
     if (editorRef.current) {
@@ -25,12 +30,23 @@ const Ask = () => {
   };
 
   const ShowImage = () => {
+    if (!file) return <></>;
     const imageFile = window.URL.createObjectURL(file[0]);
-    return <Image src={imageFile} alt="img preview" />;
+    return (
+      <Image
+        src={imageFile}
+        alt="img preview"
+        border="1px solid gray"
+        rounded="lg"
+        objectFit="fill"
+        maxH="500px"
+        mb="3"
+      />
+    );
   };
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    if (!file || file.length === 0) return;
     const formData = new FormData();
     formData.append("image", file[0]);
     const upload = await fetch("https://api.imgur.com/3/image/", {
@@ -41,34 +57,62 @@ const Ask = () => {
       },
     });
     const data = await upload.json();
-    console.log("finish", data);
+    console.log(data);
   };
 
   return (
-    <VStack justifyContent="flex-start">
+    <VStack alignItems="flex-start" spacing="3">
       <Heading fontSize="3xl" color="black" py={2}>
         Ask a Question
       </Heading>
-      <Box>{file && <ShowImage />}</Box>
-      <Box as="form" onSubmit={handleSubmit}>
-        <FormLabel htmlFor="image">+</FormLabel>
-        <Input
-          id="image"
-          type="file"
-          d="none"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setFile(e.target.files)
-          }
-        />
-        <Button type="submit">Submit</Button>
+      <Box maxH="500px">{file && file.length > 0 && <ShowImage />}</Box>
+      <Box w="full">
+        <Flex alignItems="center" justifySelf="flex-start">
+          <Tooltip label="Add Thumbnail" placement="top" fontSize="lg">
+            <FormLabel
+              htmlFor="image"
+              rounded="full"
+              border="1px solid gray"
+              p="2"
+              cursor="pointer"
+            >
+              <AiOutlinePlus />
+            </FormLabel>
+          </Tooltip>
+          <Input
+            type="text"
+            bg="transparent"
+            fontSize="2xl"
+            color="blackAlpha.800"
+            placeholder="Title..."
+            variant="unstyled"
+            border="none"
+            radius="none"
+            pb="2"
+            autoFocus={true}
+            fontWeight="bold"
+            w="full"
+          />
+          <Input
+            id="image"
+            type="file"
+            d="none"
+            w="1"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              console.log(e.target.files);
+              setFile(e.target.files);
+            }}
+          />
+        </Flex>
       </Box>
       <Box>
         <Editor
           apiKey="hqszmtu5zxgdxmnelmwel30majicpz2iauxla23b0rewystb"
           onInit={(evt, editor) => (editorRef.current = editor)}
-          initialValue="<p>This is the initial content of the editor.</p>"
+          initialValue="<p>Write your question here..</p>"
           init={{
             height: 500,
+            width: 887.22,
             menubar: false,
             plugins: [
               "advlist autolink lists link image charmap print preview anchor",
@@ -86,7 +130,7 @@ const Ask = () => {
               const formData = new FormData();
               formData.append("file", blobInfo.blob(), blobInfo.filename());
               formData.append("upload_preset", unsignedUploadPreset);
-              formData.append("cloud_name", cloudname); // TODO: Exposed External API. Should be internalized.
+              formData.append("cloud_name", cloudname);
 
               try {
                 const res = await axios.post(
@@ -108,8 +152,9 @@ const Ask = () => {
           }}
         />
       </Box>
-      <Button onClick={log}>Log Data</Button>
-      {/* <Button type="submit">Submit</Button> */}
+      <Button onClick={log} w="full" colorScheme="brand">
+        Ask the Question
+      </Button>
     </VStack>
   );
 };
