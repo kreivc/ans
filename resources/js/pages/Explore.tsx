@@ -38,9 +38,9 @@ const Explore = () => {
         </Heading>
         {allQuestion ? (
           allQuestion.map((data, id) => (
-            <Box key={id}>
+            <Link to={`/question/${data.id}`} key={id}>
               <QuestionCard {...data} />
-            </Box>
+            </Link>
           ))
         ) : (
           <Text>No result found</Text>

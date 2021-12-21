@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
-use App\Models\QuestionImage;
 use App\Models\QuestionTag;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
@@ -44,7 +42,6 @@ class QuestionController extends Controller
 
         if($request->question_tags != null){
             foreach ($request->question_tags as $question_tag) {
-                // cari apakah si tag udah pernah ada
                 $tag = Tag::where('tag_name','LIKE', $question_tag)->first();
                 if($tag == null){
                     $tag = Tag::create([
@@ -87,9 +84,8 @@ class QuestionController extends Controller
         $questions = Question::with(
         ['user', 'question_tag' => function($query){
             return $query->with('tag');
-        }])->get();
+        }])->orderBy('created_at','desc')->get();
         $tag = Tag::all();
-
 
         return response()->json([
             'questions' => $questions,
