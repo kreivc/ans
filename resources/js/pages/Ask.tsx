@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  FormControl,
   FormLabel,
   Heading,
   VStack,
@@ -9,23 +8,28 @@ import {
   Image,
   Flex,
   Tooltip,
+  Divider,
+  Text,
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
 import { AiOutlinePlus } from "react-icons/ai";
+import TagsInput from "../components/TagsInput";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../store/hooks";
+import { selectUser } from "../store/UserSlice";
 
 const Ask = () => {
   const [file, setFile] = useState<FileList | null>(null);
-  const editorRef = useRef<any>(null);
+  const [tags, setTags] = useState<string[]>([]);
+  const [title, setTitle] = useState("");
   const cloudname = "dor0udr7t";
   const unsignedUploadPreset = "ansUUP";
-
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
+  const editorRef = useRef<any>(null);
+  const navigate = useNavigate();
+  const user = useAppSelector(selectUser);
+  const isLogged = Object.keys(user).length !== 0;
 
   const ShowImage = () => {
     if (!file) return <></>;
@@ -43,19 +47,52 @@ const Ask = () => {
     );
   };
 
-  const handleSubmit = async () => {
-    if (!file || file.length === 0) return;
-    const formData = new FormData();
-    formData.append("image", file[0]);
-    const upload = await fetch("https://api.imgur.com/3/image/", {
-      method: "POST",
-      body: formData,
-      headers: {
-        Authorization: "Client-ID 3e28a194c9022ae",
-      },
-    });
-    const data = await upload.json();
-    console.log(data);
+  const changeHandler = (value: string[]) => {
+    setTags(value);
+  };
+
+  const askQuestion = async () => {
+    if (!isLogged) {
+      navigate("/login");
+      return;
+    }
+    const body = editorRef.current.getContent();
+    let image_url = "";
+
+    if (file && file.length !== 0) {
+      const formData = new FormData();
+      formData.append("file", file[0]);
+      formData.append("upload_preset", unsignedUploadPreset);
+      formData.append("cloud_name", cloudname);
+
+      const res: any = await axios
+        .post(
+          `https://api.cloudinary.com/v1_1/${cloudname}/image/upload`,
+          formData
+        )
+        .catch((err) => console.log(err));
+
+      image_url = res.data.secure_url;
+    }
+
+    const post: any = await axios
+      .post(
+        "/api/question/create",
+        {
+          title,
+          body,
+          image_url,
+          question_tags: tags,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      )
+      .catch((err) => console.log(err));
+
+    navigate("/");
   };
 
   return (
@@ -90,6 +127,7 @@ const Ask = () => {
             autoFocus={true}
             fontWeight="bold"
             w="full"
+            onChange={(e) => setTitle(e.target.value)}
           />
           <Input
             id="image"
@@ -97,13 +135,12 @@ const Ask = () => {
             d="none"
             w="1"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              console.log(e.target.files);
               setFile(e.target.files);
             }}
           />
         </Flex>
       </Box>
-      <Box>
+      <Box w="887.22px" h="500px">
         <Editor
           apiKey="hqszmtu5zxgdxmnelmwel30majicpz2iauxla23b0rewystb"
           onInit={(evt, editor) => (editorRef.current = editor)}
@@ -150,7 +187,18 @@ const Ask = () => {
           }}
         />
       </Box>
-      <Button onClick={log} w="full" colorScheme="brand">
+      <Flex w="full" flex={1} alignItems="flex-end">
+        <Text fontSize="2xl" fontWeight="semibold" mb="2" mr="2">
+          Tags:
+        </Text>
+        <TagsInput
+          placeholder="Add tags.."
+          onChange={changeHandler}
+          defaultTags={tags}
+        />
+      </Flex>
+      <Divider />
+      <Button onClick={askQuestion} w="full" colorScheme="brand">
         Ask the Question
       </Button>
     </VStack>
