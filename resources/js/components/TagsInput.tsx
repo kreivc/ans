@@ -21,7 +21,7 @@ export default function TagsInput({
   defaultTags,
 }: TagsInputProps) {
   const [value, setValue] = useState("");
-  const [tags, setTags] = useState(defaultTags ? defaultTags : []);
+  const [tags, setTags] = useState<string[]>(defaultTags || [""]);
 
   const changeHandler = (e: any) => {
     setValue(e.target.value);

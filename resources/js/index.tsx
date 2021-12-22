@@ -1,5 +1,5 @@
 import React from "react";
-import "./utils/global.module.css";
+import "./utils/global.css";
 import { render } from "react-dom";
 import theme from "./utils/theme";
 import { ChakraProvider } from "@chakra-ui/react";

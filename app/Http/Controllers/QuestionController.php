@@ -118,7 +118,6 @@ class QuestionController extends Controller
         if ($request->question_tags != null) {
             QuestionTag::where('question_id',$id)->delete();
             foreach ($request->question_tags as $question_tag) {
-                // cari apakah si tag udah pernah ada
                 $tag = Tag::where('tag_name', 'LIKE', $question_tag)->first();
                 if ($tag == null) {
                     $tag = Tag::create([
@@ -155,6 +154,7 @@ class QuestionController extends Controller
             'message' => 'delete question succesfully'
         ]);
     }
+
     public function searchQuestion(Request $request){
         $data=Question::with(['user','question_tag'=>function($query){
             return $query->with('tag');

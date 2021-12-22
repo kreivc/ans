@@ -10,30 +10,65 @@ import {
   Tooltip,
   Divider,
   Text,
+  createStandaloneToast,
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { AiOutlinePlus } from "react-icons/ai";
 import TagsInput from "../components/TagsInput";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../store/hooks";
 import { selectUser } from "../store/UserSlice";
+import { validateForm } from "../utils";
+
+export type TagsProps = {
+  created_at: Date;
+  question_id: number;
+  tag: {
+    id: number;
+    tag_name: string;
+    created_at: Date;
+    updated_at: Date;
+  };
+  tag_id: 15;
+  updated_at: Date;
+};
+
+type UpdateProps = {
+  id: number;
+  title: string;
+  body: string;
+  image_url: string;
+  question_tag: TagsProps[];
+};
 
 const Ask = () => {
+  const location = useLocation();
+  const updateQuestion: UpdateProps | undefined = location.state?.update;
+  const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<FileList | null>(null);
-  const [tags, setTags] = useState<string[]>([]);
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(updateQuestion?.title || "");
+  const [tags, setTags] = useState<string[]>(
+    updateQuestion?.question_tag.map((tag) => tag.tag.tag_name) || []
+  );
   const cloudname = "dor0udr7t";
   const unsignedUploadPreset = "ansUUP";
   const editorRef = useRef<any>(null);
   const navigate = useNavigate();
   const user = useAppSelector(selectUser);
   const isLogged = Object.keys(user).length !== 0;
+  const toast = createStandaloneToast();
 
   const ShowImage = () => {
-    if (!file) return <></>;
-    const imageFile = window.URL.createObjectURL(file[0]);
+    let imageFile: string = "";
+    if (file && file.length > 0) {
+      imageFile = window.URL.createObjectURL(file[0]);
+    } else if (updateQuestion) {
+      imageFile = updateQuestion.image_url;
+    }
+    if (!imageFile) return <></>;
+
     return (
       <Image
         src={imageFile}
@@ -52,11 +87,35 @@ const Ask = () => {
   };
 
   const askQuestion = async () => {
+    setIsLoading(true);
+
     if (!isLogged) {
+      toast({
+        title: "Not Authorized!",
+        description: "Login to continue.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
       navigate("/login");
+      setIsLoading(false);
       return;
     }
     const body = editorRef.current.getContent();
+
+    const validateData = validateForm(title, body, tags);
+    if (validateData.status === "error") {
+      toast({
+        title: validateData.title,
+        description: validateData.description,
+        status: validateData.status,
+        duration: 5000,
+        isClosable: true,
+      });
+      setIsLoading(false);
+      return;
+    }
+
     let image_url = "";
 
     if (file && file.length !== 0) {
@@ -73,26 +132,35 @@ const Ask = () => {
         .catch((err) => console.log(err));
 
       image_url = res.data.secure_url;
+    } else if (updateQuestion) {
+      image_url = updateQuestion?.image_url;
     }
 
-    const post: any = await axios
-      .post(
-        "/api/question/create",
-        {
-          title,
-          body,
-          image_url,
-          question_tags: tags,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      )
-      .catch((err) => console.log(err));
+    const axiosConfig: AxiosRequestConfig<any> = {
+      headers: { Authorization: `Bearer ${user.token}` },
+    };
 
-    navigate("/");
+    const update = updateQuestion
+      ? async (data: any) => {
+          return await axios.put(
+            `/api/question/update/${updateQuestion.id}`,
+            data,
+            axiosConfig
+          );
+        }
+      : async (data: any) => {
+          return await axios.post(`/api/question/create`, data, axiosConfig);
+        };
+
+    const updateResult = await update({
+      title,
+      body,
+      image_url,
+      question_tags: tags,
+    });
+
+    setIsLoading(false);
+    navigate(`/question/${updateResult.data.question.id}`);
   };
 
   return (
@@ -100,7 +168,9 @@ const Ask = () => {
       <Heading fontSize="3xl" color="black" py={2}>
         Ask a Question
       </Heading>
-      <Box maxH="500px">{file && file.length > 0 && <ShowImage />}</Box>
+      <Box maxH="500px">
+        <ShowImage />
+      </Box>
       <Box w="full">
         <Flex alignItems="center" justifySelf="flex-start">
           <Tooltip label="Add Thumbnail" placement="top" fontSize="lg">
@@ -127,11 +197,13 @@ const Ask = () => {
             autoFocus={true}
             fontWeight="bold"
             w="full"
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <Input
             id="image"
             type="file"
+            accept="image/*"
             d="none"
             w="1"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,7 +216,11 @@ const Ask = () => {
         <Editor
           apiKey="hqszmtu5zxgdxmnelmwel30majicpz2iauxla23b0rewystb"
           onInit={(evt, editor) => (editorRef.current = editor)}
-          initialValue="<p>Write your question here..</p>"
+          initialValue={
+            updateQuestion
+              ? updateQuestion.body
+              : "<p>Write your question here..</p>"
+          }
           init={{
             height: 500,
             width: 887.22,
@@ -198,8 +274,13 @@ const Ask = () => {
         />
       </Flex>
       <Divider />
-      <Button onClick={askQuestion} w="full" colorScheme="brand">
-        Ask the Question
+      <Button
+        onClick={askQuestion}
+        isLoading={isLoading}
+        w="full"
+        colorScheme="brand"
+      >
+        {updateQuestion ? "Update Question" : "Ask the Question"}
       </Button>
     </VStack>
   );

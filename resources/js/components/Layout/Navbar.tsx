@@ -19,6 +19,10 @@ import { FiLogOut } from "react-icons/fi";
 export default function Navbar() {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+  const isLogged = Object.keys(user).length !== 0;
+
   const searchSubmit = async (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (search === "") {
@@ -27,17 +31,6 @@ export default function Navbar() {
     const res = await axios.post("/api/question/search?keyword=" + search);
     navigate("/search/result", {
       state: { result: res.data, keyword: search },
-    });
-  };
-
-  const dispatch = useAppDispatch();
-  const user = useAppSelector(selectUser);
-  const isLogged = Object.keys(user).length !== 0;
-
-  const exploreSsr = async () => {
-    const res = await axios.get("/api/question/explore");
-    navigate("/explore", {
-      state: { result: res.data },
     });
   };
 
@@ -58,7 +51,7 @@ export default function Navbar() {
             </Heading>
           </Link>
           <Flex color="#605C5C" gridGap={1}>
-            <Button variant="ghost" onClick={exploreSsr}>
+            <Button variant="ghost" onClick={() => navigate("/explore")}>
               Explore
             </Button>
             <Button variant="ghost">About Us</Button>

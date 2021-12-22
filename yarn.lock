@@ -908,7 +908,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.9.2":
+"@babel/runtime@^7.16.3", "@babel/runtime@^7.9.2":
   version "7.16.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.5.tgz#7f3e34bf8bdbbadf03fbb7b1ea0d929569c9487a"
   integrity sha512-TXWihFIS3Pyv5hzR7j6ihmeLkZfrXGxAr5UfSl8CHf+6q/wpiYDkUau0czckpYG8QmnCIuPpdLtuA9VmuGGyMA==
@@ -4324,10 +4324,20 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+  integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
+
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
+
+lodash.isplainobject@^4.0.6:
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
+  integrity sha1-fFJqUtibRcRcxpC4gWO+BJf1UMs=
 
 lodash.memoize@^4.1.2:
   version "4.1.2"
@@ -4339,10 +4349,20 @@ lodash.mergewith@4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.2.tgz#617121f89ac55f59047c7aec1ccd6654c6590f55"
   integrity sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==
 
+lodash.trim@^4.5.1:
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/lodash.trim/-/lodash.trim-4.5.1.tgz#36425e7ee90be4aa5e27bcebb85b7d11ea47aa57"
+  integrity sha1-NkJefukL5KpeJ7zruFt9EepHqlc=
+
 lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
+
+lodash.without@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.without/-/lodash.without-4.4.0.tgz#3cd4574a00b67bae373a94b748772640507b7aac"
+  integrity sha1-PNRXSgC2e643OpS3SHcmQFB7eqw=
 
 lodash@^4.17.14, lodash@^4.17.19, lodash@^4.17.21:
   version "4.17.21"
@@ -5286,6 +5306,39 @@ range-parser@^1.2.1, range-parser@~1.2.1:
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
 
+ranges-apply@^6.0.7:
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/ranges-apply/-/ranges-apply-6.0.7.tgz#2dd197967557cc09aadbd9ebcd7c2fe61690a506"
+  integrity sha512-MXFQ+8WfeE1jURpUnHCw2y7PvGrNcl3d/ftwEKxThqGtC7D39StkletseHCMeWJRk4SrA4Sv1Dy/6sRzu5tFoA==
+  dependencies:
+    "@babel/runtime" "^7.16.3"
+    ranges-merge "^8.0.7"
+
+ranges-merge@^8.0.7:
+  version "8.0.7"
+  resolved "https://registry.yarnpkg.com/ranges-merge/-/ranges-merge-8.0.7.tgz#643b5794e58a63f14fcef8cfe7cd173769e5abf8"
+  integrity sha512-p07mScHT32ohEQj7jKuF34XHngYZZlpOw6VqbrBFeC4uqsRwkC2g2qVJN2hF8NybOWXBQxNH2AT5WeNX2S1+FQ==
+  dependencies:
+    "@babel/runtime" "^7.16.3"
+    ranges-push "^6.0.7"
+    ranges-sort "^5.0.7"
+
+ranges-push@^6.0.7:
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/ranges-push/-/ranges-push-6.0.7.tgz#cd1d1d9ede82df3e0f5a145a82bc60d3c259c7fb"
+  integrity sha512-L/smWggln2Zuty8+W4IOdLoHsjzZiflb69QKjM18K3M0WlAOJ6W8QhSYfwBeSgSLMkCtWgSJbQxy65T782NHGw==
+  dependencies:
+    "@babel/runtime" "^7.16.3"
+    string-collapse-leading-whitespace "^6.0.7"
+    string-trim-spaces-only "^4.0.7"
+
+ranges-sort@^5.0.7:
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/ranges-sort/-/ranges-sort-5.0.7.tgz#d906ae1d94590d54b23780013af5c730c5928756"
+  integrity sha512-3kl0MVjX+SZ0XZ/ClIbbexTNWAbuBXjR7UWP3dUdjRLnZK/loWMkwDD+G0vtA/SPIIuvaAzY8Nc2ERe/mA4FuQ==
+  dependencies:
+    "@babel/runtime" "^7.16.3"
+
 raw-body@2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/raw-body/-/raw-body-2.4.0.tgz#a1ce6fb9c9bc356ca52e89256ab59059e13d0332"
@@ -5872,6 +5925,43 @@ stream-http@^2.7.2:
     readable-stream "^2.3.6"
     to-arraybuffer "^1.0.0"
     xtend "^4.0.0"
+
+string-collapse-leading-whitespace@^6.0.7:
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/string-collapse-leading-whitespace/-/string-collapse-leading-whitespace-6.0.7.tgz#da2f075fdb6c32c15362f0255a5b6cb1d2f0d9dd"
+  integrity sha512-//XXRW2BsgFfwPBfjx1cXrppUZPv006NXX8QRh3fonGpMj7cUJ204j8jQHMoUZgD4M6aBs8mH1kqAgaV8Fv5Qw==
+  dependencies:
+    "@babel/runtime" "^7.16.3"
+
+string-left-right@^5.0.7:
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/string-left-right/-/string-left-right-5.0.7.tgz#a56b57746eef8f4b44d86e051d83ec09924b9c19"
+  integrity sha512-kXLbjYRXPNpURSn79xIbeU1Yk0sTs05WbkR1c2Zr41QHEwDfT1P0jWk0aKJjUL7eXnL2irwsYwGFn1hzhRJ/1A==
+  dependencies:
+    "@babel/runtime" "^7.16.3"
+    lodash.clonedeep "^4.5.0"
+    lodash.isplainobject "^4.0.6"
+
+string-strip-html@^9.1.1:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/string-strip-html/-/string-strip-html-9.1.1.tgz#ae7f2fdd6da7fe2c6a98dc95cd5732e3ab7c7c10"
+  integrity sha512-ElzXxnAPPFtpmGsnRsEDdGgyXOG5pe8dNIDyNY5giJKaMuXsn9N/O+b57EcsQBLN77lkBgPYzR/xH+MHLye/XQ==
+  dependencies:
+    "@babel/runtime" "^7.16.3"
+    html-entities "^2.3.2"
+    lodash.isplainobject "^4.0.6"
+    lodash.trim "^4.5.1"
+    lodash.without "^4.4.0"
+    ranges-apply "^6.0.7"
+    ranges-push "^6.0.7"
+    string-left-right "^5.0.7"
+
+string-trim-spaces-only@^4.0.7:
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/string-trim-spaces-only/-/string-trim-spaces-only-4.0.7.tgz#06982ed3d730ac15f9533ac8608340c16f988371"
+  integrity sha512-rIQ5JsYK91N6VQJCcyG08VTaFDVIge4dI5HiphIt7bInHdKrXOjanLL1MdwPwcn52u8IHkElzSeg5568jhnJOA==
+  dependencies:
+    "@babel/runtime" "^7.16.3"
 
 string-width@^4.1.0, string-width@^4.2.0:
   version "4.2.3"
