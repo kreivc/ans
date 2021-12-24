@@ -8,10 +8,12 @@ import {
   Image,
   ListItem,
   Spinner,
-  Text,
+  Button,
   Textarea,
   UnorderedList,
   useDisclosure,
+  VStack,
+  createStandaloneToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -57,6 +59,9 @@ export default function DetailQuestion() {
   const isLogged = Object.keys(user).length !== 0;
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [body, setBody] = useState<string>("");
+  const toast = createStandaloneToast();
+  const [loading, setLoading] = useState(false);
 
   const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -88,6 +93,40 @@ export default function DetailQuestion() {
     getQuestion();
   }, []);
 
+  const handleSubmit = async () => {
+    setLoading(true);
+    if (!isLogged) {
+      toast({
+        title: "Not Authorized!",
+        description: "Login to continue.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate("/login");
+      setLoading(false);
+      return;
+    }
+    const res = await axios.post(
+      "/api/answer/create",
+      {
+        question_id: question!.id,
+        body: body,
+      },
+      {
+        headers: { Authorization: `Bearer ${user.token}` },
+      }
+    );
+    toast({
+      title: "Success Answer the Question!",
+      description: "We reload page for you",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate(0);
+  };
+
   return (
     <>
       <Modal
@@ -117,12 +156,12 @@ export default function DetailQuestion() {
           </Box>
         ) : (
           <>
-            <MotionBox
+            <Box
               flexGrow={6}
               mr="80px"
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7 }}
+              //   initial={{ opacity: 0, x: -100 }}
+              //   animate={{ opacity: 1, x: 0 }}
+              //   transition={{ duration: 0.7 }}
             >
               <Box
                 w="full"
@@ -178,24 +217,35 @@ export default function DetailQuestion() {
                   <Heading size="md" mb={4}>
                     Answers:
                   </Heading>
-                  <Flex>
-                    <Image
-                      borderRadius="full"
-                      boxSize="30px"
-                      src={
-                        isLogged
-                          ? user.user.photo_profile
-                          : "https://res.cloudinary.com/dor0udr7t/image/upload/v1629998645/nextjsEcommerce/es6ofxvauhe7lghwgh7g.png"
-                      }
-                      alt="image"
-                    />
-                    <Textarea
-                      mx="4"
-                      py="2"
-                      placeholder="Here is a sample placeholder"
+                  <VStack alignItems="flex-end" mx="4">
+                    <Flex w="full" gridGap={2}>
+                      <Image
+                        borderRadius="full"
+                        boxSize="30px"
+                        src={
+                          isLogged
+                            ? user.user.photo_profile
+                            : "https://res.cloudinary.com/dor0udr7t/image/upload/v1629998645/nextjsEcommerce/es6ofxvauhe7lghwgh7g.png"
+                        }
+                        alt="image"
+                      />
+                      <Textarea
+                        py="2"
+                        placeholder="Answer the question"
+                        colorScheme="brand"
+                        onChange={(e) => setBody(e.target.value)}
+                      />
+                    </Flex>
+                    <Button
+                      types="submit"
                       colorScheme="brand"
-                    />
-                  </Flex>
+                      justifySelf="flex-end"
+                      onClick={handleSubmit}
+                      isLoading={loading}
+                    >
+                      Answer
+                    </Button>
+                  </VStack>
                 </Box>
                 {question &&
                   question.answer.map((result: any, id: any) => (
@@ -225,14 +275,14 @@ export default function DetailQuestion() {
                     </Box>
                   ))}
               </Box>
-            </MotionBox>
+            </Box>
 
             {question && Object.keys(question.question_tag).length !== 0 && (
-              <MotionBox
+              <Box
                 flexGrow={2}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7 }}
+                // initial={{ opacity: 0, x: 100 }}
+                // animate={{ opacity: 1, x: 0 }}
+                // transition={{ duration: 0.7 }}
               >
                 <Heading fontSize="3xl" color="black" py={2}>
                   Tags
@@ -256,7 +306,7 @@ export default function DetailQuestion() {
                     ))}
                   </UnorderedList>
                 </Box>
-              </MotionBox>
+              </Box>
             )}
           </>
         )}
