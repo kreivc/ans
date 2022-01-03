@@ -1,7 +1,7 @@
 import {
   Box,
+  Flex,
   Heading,
-  HStack,
   ListItem,
   Spinner,
   Text,
@@ -37,12 +37,13 @@ const Explore = () => {
   }, []);
 
   return (
-    <HStack
+    <Flex
+      direction={{ base: "column", md: "row" }}
       justifyContent="space-between"
       w="full"
       maxW="container.xl"
       mx="auto"
-      px="20"
+      px={{ base: "0", md: "20" }}
       alignItems="flex-start"
     >
       {isLoading ? (
@@ -63,6 +64,7 @@ const Explore = () => {
             initial={{ opacity: 0, x: -100 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7 }}
+            maxW={{ base: "full", md: "container.xl" }}
           >
             <Heading fontSize="3xl" color="black" py={2}>
               Explore
@@ -108,7 +110,7 @@ const Explore = () => {
           </MotionBox>
         </>
       )}
-    </HStack>
+    </Flex>
   );
 };
 

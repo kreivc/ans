@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../store/hooks";
 import { login, LoginProps } from "../store/UserSlice";
+import { validateLogin } from "../utils";
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -27,9 +28,25 @@ const Login = () => {
   });
   const { email, password }: LoginProps = userData;
   const toast = createStandaloneToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSumbit = async (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
+    setIsLoading(true);
+    const validateData = validateLogin(userData.email, userData.password);
+
+    if (validateData.status === "error") {
+      toast({
+        title: validateData.title,
+        description: validateData.description,
+        status: validateData.status,
+        duration: 5000,
+        isClosable: true,
+      });
+      setIsLoading(false);
+      return;
+    }
+
     const { payload } = await dispatch(login({ email, password }));
     if (payload === undefined) {
       toast({
@@ -49,6 +66,7 @@ const Login = () => {
         isClosable: true,
       });
     }
+    setIsLoading(false);
     navigate("/");
   };
 
@@ -61,7 +79,7 @@ const Login = () => {
     <VStack spacing={3} alignItems="center" w="full">
       <VStack align="center">
         <Heading size="xl">Login to ANS</Heading>
-        <Text>
+        <Text textAlign="center" px="10">
           If you don’t have an account, click here to&nbsp;
           <Link to="/register">
             <Text as="span" color="#5865F2">
@@ -71,7 +89,12 @@ const Login = () => {
         </Text>
       </VStack>
       <Box as="form" onSubmit={handleSumbit}>
-        <SimpleGrid columns={2} columnGap={3} rowGap={6} w="sm">
+        <SimpleGrid
+          columns={2}
+          columnGap={3}
+          rowGap={6}
+          w={{ base: "auto", md: "sm" }}
+        >
           <GridItem colSpan={2}>
             <FormControl>
               <FormLabel>Email</FormLabel>
@@ -104,7 +127,13 @@ const Login = () => {
             </Checkbox>
           </GridItem>
           <GridItem colSpan={2}>
-            <Button size="lg" w="full" type="submit" colorScheme="brand">
+            <Button
+              size="lg"
+              w="full"
+              type="submit"
+              colorScheme="brand"
+              isLoading={isLoading}
+            >
               Login
             </Button>
           </GridItem>

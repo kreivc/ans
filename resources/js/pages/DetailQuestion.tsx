@@ -136,12 +136,13 @@ export default function DetailQuestion() {
         title={question?.title || ""}
         from="DetailQuestion"
       />
-      <HStack
+      <Flex
+        direction={{ base: "column", md: "row" }}
         justifyContent="space-between"
         w="full"
         maxW="container.xl"
         mx="auto"
-        px="20"
+        px={{ base: 0, md: "20" }}
         alignItems="flex-start"
       >
         {loding === true ? (
@@ -158,7 +159,7 @@ export default function DetailQuestion() {
           <>
             <Box
               flexGrow={6}
-              mr="80px"
+              mr={{ base: 0, md: "80px" }}
               //   initial={{ opacity: 0, x: -100 }}
               //   animate={{ opacity: 1, x: 0 }}
               //   transition={{ duration: 0.7 }}
@@ -310,7 +311,7 @@ export default function DetailQuestion() {
             )}
           </>
         )}
-      </HStack>
+      </Flex>
     </>
   );
 }

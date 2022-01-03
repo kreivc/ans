@@ -6,8 +6,10 @@ import DetailQuestion from "./pages/DetailQuestion";
 import Explore from "./pages/Explore";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import SearchResult from "./pages/SearchResult";
+import Tag from "./pages/Tag";
 
 const App = () => {
   useEffect(() => {
@@ -25,6 +27,8 @@ const App = () => {
           <Route path="/explore" element={<Explore />} />
           <Route path="/ask" element={<Ask />} />
           <Route path="/question/:id" element={<DetailQuestion />} />
+          <Route path="/tag/:id" element={<Tag />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
     </BrowserRouter>

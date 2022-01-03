@@ -23,11 +23,31 @@ export interface LoginProps {
   email: string;
   password: string;
 }
+export interface RegisterProps {
+  name: string;
+  email: string;
+  password: string;
+  photo_profile: string;
+}
 
 export const login = createAsyncThunk(
   "user/login",
   async (creds: LoginProps) => {
     const res = await axios.post("/api/login", {
+      ...creds,
+    });
+    if (res.data.token !== null) {
+      const serializedState = JSON.stringify({ user: res.data });
+      localStorage.setItem("user", serializedState);
+    }
+    return res.data;
+  }
+);
+
+export const register = createAsyncThunk(
+  "user/register",
+  async (creds: RegisterProps) => {
+    const res = await axios.post("/api/register", {
       ...creds,
     });
     if (res.data.token !== null) {
@@ -48,6 +68,12 @@ export const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(register.fulfilled, (state, action) => {
+      state.data = action.payload;
+    });
+    builder.addCase(register.rejected, (state, action) => {
+      state.data = initialState.data;
+    });
     builder.addCase(login.fulfilled, (state, action) => {
       state.data = action.payload;
     });

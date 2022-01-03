@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import QuestionCard, { QuestionCardProps } from "../components/QuestionCard";
 import { motion } from "framer-motion";
 
@@ -24,7 +24,9 @@ export default function SearchResult() {
           location.state.result.question.map(
             (data: QuestionCardProps, id: number) => (
               <Box key={id} flexGrow={1}>
-                <QuestionCard {...data} />
+                <Link to={`/question/${data.id}`} key={id}>
+                  <QuestionCard {...data} />
+                </Link>
               </Box>
             )
           )
