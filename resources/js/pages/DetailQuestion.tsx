@@ -190,7 +190,7 @@ export default function DetailQuestion() {
                       data={{
                         image: question ? question.user.photo_profile : "",
                         name: question ? question.user.name : "",
-                        date: 0,
+                        date: question ? question.created_at : "",
                       }}
                     />
                     {isLogged && user.user.id === question?.user_id && (
