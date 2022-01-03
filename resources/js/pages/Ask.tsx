@@ -11,6 +11,7 @@ import {
   Divider,
   Text,
   createStandaloneToast,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
@@ -59,6 +60,8 @@ const Ask = () => {
   const user = useAppSelector(selectUser);
   const isLogged = Object.keys(user).length !== 0;
   const toast = createStandaloneToast();
+  const editorWidth = useBreakpointValue({ base: "333px", md: "887.22px" });
+  const editorHeight = "500px";
 
   const ShowImage = () => {
     let imageFile: string = "";
@@ -164,7 +167,7 @@ const Ask = () => {
   };
 
   return (
-    <VStack alignItems="flex-start" spacing="3">
+    <VStack alignItems="flex-start" spacing="3" w={editorWidth}>
       <Heading fontSize="3xl" color="black" py={2}>
         Ask a Question
       </Heading>
@@ -212,7 +215,7 @@ const Ask = () => {
           />
         </Flex>
       </Box>
-      <Box w="887.22px" h="500px">
+      <Box w={editorWidth} h={editorHeight}>
         <Editor
           apiKey="hqszmtu5zxgdxmnelmwel30majicpz2iauxla23b0rewystb"
           onInit={(evt, editor) => (editorRef.current = editor)}
@@ -222,8 +225,8 @@ const Ask = () => {
               : "<p>Write your question here..</p>"
           }
           init={{
-            height: 500,
-            width: 887.22,
+            height: editorHeight,
+            width: editorWidth,
             menubar: false,
             plugins: [
               "advlist autolink lists link image charmap print preview anchor",
