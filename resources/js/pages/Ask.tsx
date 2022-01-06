@@ -22,6 +22,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../store/hooks";
 import { selectUser } from "../store/UserSlice";
 import { validateForm } from "../utils";
+import theme from "../utils/theme";
 
 export type TagsProps = {
   created_at: Date;
@@ -59,7 +60,7 @@ const Ask = () => {
   const navigate = useNavigate();
   const user = useAppSelector(selectUser);
   const isLogged = Object.keys(user).length !== 0;
-  const toast = createStandaloneToast();
+  const toast = createStandaloneToast({ theme: theme });
   const editorWidth = useBreakpointValue({ base: "333px", md: "887.22px" });
   const editorHeight = "500px";
 

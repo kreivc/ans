@@ -27,6 +27,7 @@ import { logout, selectUser } from "../../store/UserSlice";
 import axios from "axios";
 import { FiLogOut } from "react-icons/fi";
 import { GoThreeBars } from "react-icons/go";
+import theme from "../../utils/theme";
 
 export default function Navbar() {
   const [search, setSearch] = useState("");
@@ -35,7 +36,7 @@ export default function Navbar() {
   const user = useAppSelector(selectUser);
   const isLogged = Object.keys(user).length !== 0;
   const [isLoading, setIsLoading] = useState(false);
-  const toast = createStandaloneToast();
+  const toast = createStandaloneToast({ theme: theme });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef() as any;

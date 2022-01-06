@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../store/hooks";
 import { register } from "../store/UserSlice";
 import { validateRegister } from "../utils";
+import theme from "../utils/theme";
 
 type RegisterProps = {
   name: string;
@@ -37,7 +38,7 @@ const Register = () => {
     confirmPassword: "",
   });
   const { name, email, password, confirmPassword }: RegisterProps = userData;
-  const toast = createStandaloneToast();
+  const toast = createStandaloneToast({ theme: theme });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSumbit = async (e: React.FormEvent<EventTarget>) => {
@@ -47,7 +48,8 @@ const Register = () => {
     const validateData = validateRegister(
       userData.name,
       userData.email,
-      userData.password
+      userData.password,
+      userData.confirmPassword
     );
 
     if (validateData.status === "error") {
@@ -80,11 +82,12 @@ const Register = () => {
     if (payload === undefined) {
       toast({
         title: "Something went Wrong!",
-        description: "Pls Try again..",
+        description: "Please Try again..",
         status: "error",
         duration: 5000,
         isClosable: true,
       });
+      setIsLoading(false);
       return;
     } else {
       toast({

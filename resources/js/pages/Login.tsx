@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../store/hooks";
 import { login, LoginProps } from "../store/UserSlice";
 import { validateLogin } from "../utils";
+import theme from "../utils/theme";
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -27,7 +28,7 @@ const Login = () => {
     password: "",
   });
   const { email, password }: LoginProps = userData;
-  const toast = createStandaloneToast();
+  const toast = createStandaloneToast({ theme: theme });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSumbit = async (e: React.FormEvent<EventTarget>) => {
@@ -56,6 +57,7 @@ const Login = () => {
         duration: 5000,
         isClosable: true,
       });
+      setIsLoading(false);
       return;
     } else {
       toast({

@@ -16,7 +16,6 @@ import {
   createStandaloneToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import AvatarCard from "../components/AvatarCard";
@@ -27,6 +26,7 @@ import { UserProps } from "../components/QuestionCard";
 import { TagsProps } from "./Ask";
 import Modal from "../components/Modal";
 import { BiEdit, BiTrash } from "react-icons/bi";
+import theme from "../utils/theme";
 
 export interface Answer {
   id: number;
@@ -51,7 +51,6 @@ type QuestionDetailProps = {
 };
 
 export default function DetailQuestion() {
-  const MotionBox = motion(Box);
   const { id } = useParams();
   const [loding, setLoding] = useState(false);
   const [question, setQuestion] = useState<QuestionDetailProps | null>(null);
@@ -60,7 +59,7 @@ export default function DetailQuestion() {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [body, setBody] = useState<string>("");
-  const toast = createStandaloneToast();
+  const toast = createStandaloneToast({ theme: theme });
   const [loading, setLoading] = useState(false);
 
   const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -157,13 +156,7 @@ export default function DetailQuestion() {
           </Box>
         ) : (
           <>
-            <Box
-              flexGrow={6}
-              mr={{ base: 0, md: "80px" }}
-              //   initial={{ opacity: 0, x: -100 }}
-              //   animate={{ opacity: 1, x: 0 }}
-              //   transition={{ duration: 0.7 }}
-            >
+            <Box flexGrow={6} mr={{ base: 0, md: "80px" }}>
               <Box
                 w="full"
                 borderWidth="1px"

@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../store/hooks";
 import { selectUser } from "../store/UserSlice";
+import theme from "../utils/theme";
 
 type ModalProps = {
   id: number;
@@ -27,7 +28,7 @@ type ModalProps = {
 export default function Modal(props: ModalProps) {
   const user = useAppSelector(selectUser);
   const [isLoading, setIsLoading] = useState(false);
-  const toast = createStandaloneToast();
+  const toast = createStandaloneToast({ theme: theme });
   const navigate = useNavigate();
 
   const deleteQuestion = async () => {

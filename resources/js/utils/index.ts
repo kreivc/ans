@@ -86,7 +86,8 @@ export const validateLogin = (email: string, passowrd: string) => {
 export const validateRegister = (
   name: string,
   email: string,
-  passowrd: string
+  passowrd: string,
+  confirmPassword: string
 ) => {
   if (name === "") {
     return {
@@ -122,6 +123,12 @@ export const validateRegister = (
     return {
       title: "Wrong Password format!",
       description: "Password must be at least 6 characters..",
+      status: "error",
+    };
+  } else if (passowrd !== confirmPassword) {
+    return {
+      title: "Password and Confirm Password must be same!",
+      description: "Fix your password format..",
       status: "error",
     };
   } else {
