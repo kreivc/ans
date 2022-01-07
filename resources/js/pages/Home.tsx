@@ -1,10 +1,12 @@
 import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const MotionBox = motion(Box);
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <MotionBox
       minH="calc(100vh - 61.2px - 56px)"
@@ -31,16 +33,23 @@ const Home = () => {
           </Text>
         </Flex>
         <Flex gridGap="3">
-          <Button size="md" colorScheme="brand" color="white" shadow="md">
-            Get Started
+          <Button
+            size="md"
+            colorScheme="brand"
+            color="white"
+            shadow="md"
+            onClick={() => navigate("/explore")}
+          >
+            Explore Now
           </Button>
           <Button
             size="md"
             colorScheme="whiteAlpha"
             color="brand.500"
             shadow="md"
+            onClick={() => navigate("/ask")}
           >
-            How it works
+            Ask Now
           </Button>
         </Flex>
       </VStack>

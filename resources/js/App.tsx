@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
+import About from "./pages/About";
 import Ask from "./pages/Ask";
 import DetailQuestion from "./pages/DetailQuestion";
 import Explore from "./pages/Explore";
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/ask" element={<Ask />} />
           <Route path="/question/:id" element={<DetailQuestion />} />
           <Route path="/tag/:id" element={<Tag />} />
+          <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

@@ -86,7 +86,9 @@ export default function Navbar() {
               <Button variant="ghost" onClick={() => navigate("/explore")}>
                 Explore
               </Button>
-              <Button variant="ghost">About Us</Button>
+              <Button variant="ghost" onClick={() => navigate("/about")}>
+                About Us
+              </Button>
               <Button variant="ghost" onClick={() => navigate("/ask")}>
                 Ask
               </Button>
@@ -179,7 +181,11 @@ export default function Navbar() {
               >
                 Explore
               </Button>
-              <Button w="300px" variant="ghost">
+              <Button
+                w="300px"
+                variant="ghost"
+                onClick={() => navigate("/about")}
+              >
                 About Us
               </Button>
               <Button
