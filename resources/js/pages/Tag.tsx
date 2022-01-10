@@ -8,7 +8,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
-import QuestionCard, { QuestionCardProps } from "../components/QuestionCard";
 import { motion } from "framer-motion";
 import axios from "axios";
 import QuestionTagCard from "../components/QuestionTagCard";
