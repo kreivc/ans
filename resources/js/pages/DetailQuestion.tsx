@@ -19,7 +19,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import AvatarCard from "../components/AvatarCard";
-import parse from "html-react-parser";
 import { useAppSelector } from "../store/hooks";
 import { selectUser } from "../store/UserSlice";
 import { UserProps } from "../components/QuestionCard";
@@ -202,9 +201,11 @@ export default function DetailQuestion() {
                     )}
                   </Flex>
                   <Heading size="xl">{question && question.title}</Heading>
-                  <Box fontSize="md" my="6">
-                    {parse(question ? question.body : "")}
-                  </Box>
+                  <Box
+                    fontSize="md"
+                    my="6"
+                    dangerouslySetInnerHTML={{ __html: question?.body ?? "" }}
+                  ></Box>
                 </Box>
                 <Divider />
                 <Box p="6">
@@ -272,12 +273,7 @@ export default function DetailQuestion() {
             </Box>
 
             {question && Object.keys(question.question_tag).length !== 0 && (
-              <Box
-                flexGrow={2}
-                // initial={{ opacity: 0, x: 100 }}
-                // animate={{ opacity: 1, x: 0 }}
-                // transition={{ duration: 0.7 }}
-              >
+              <Box flexGrow={2}>
                 <Heading fontSize="3xl" color="black" py={2}>
                   Tags
                 </Heading>

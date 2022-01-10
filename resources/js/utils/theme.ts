@@ -37,6 +37,34 @@ const theme = extendTheme(
       heading: `Poppins, ${base.fonts.heading}`,
       body: `Inter, ${base.fonts.body}`,
     },
+    styles: {
+      global: {
+        h1: {
+          fontSize: "3xl",
+          fontWeight: "bold",
+        },
+        h2: {
+          fontSize: "2xl",
+          fontWeight: "bold",
+        },
+        h3: {
+          fontSize: "xl",
+          fontWeight: "bold",
+        },
+        h4: {
+          fontSize: "lg",
+          fontWeight: "bold",
+        },
+        h5: {
+          fontSize: "md",
+          fontWeight: "bold",
+        },
+        h6: {
+          fontSize: "sm",
+          fontWeight: "bold",
+        },
+      },
+    },
     components: {
       Button: {
         variants: {
