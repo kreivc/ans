@@ -14,13 +14,16 @@ class TagsSeeder extends Seeder
      */
     public function run()
     {
-        $tags = [
-            ['tag_name' => 'Matematika'],
-            ['tag_name' => 'Kimia',],
-            ['tag_name' => 'Biologi',],
-            ['tag_name' => 'Fisika',],
-        ];
 
-        DB::table('tags')->insert($tags);
+        DB::table('tags')->insert([
+            ['tag_name' => 'Matematika'],
+            ['tag_name' => 'Kimia'],
+            ['tag_name' => 'Biologi'],
+            ['tag_name' => 'Fisika'],
+            ['tag_name' => 'Data Structure'],
+            ['tag_name' => 'Coding'],
+            ['tag_name' => 'AVL'],
+            ['tag_name' => 'Berhitung'],
+        ]);
     }
 }

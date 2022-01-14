@@ -14,14 +14,19 @@ class QuestionTagsSeeder extends Seeder
      */
     public function run()
     {
-        $question_tags = [
+
+        DB::table('question_tags')->insert([
             ['question_id' => 1, 'tag_id' => 1,],
             ['question_id' => 2, 'tag_id' => 2,],
             ['question_id' => 3, 'tag_id' => 3,],
             ['question_id' => 4, 'tag_id' => 4,],
             ['question_id' => 5, 'tag_id' => 1,],
-        ];
-
-        DB::table('question_tags')->insert($question_tags);
+            ['question_id' => 6, 'tag_id' => 5,],
+            ['question_id' => 6, 'tag_id' => 6,],
+            ['question_id' => 6, 'tag_id' => 7,],
+            ['question_id' => 1, 'tag_id' => 8,],
+            ['question_id' => 5, 'tag_id' => 8,],
+        ]);
+     
     }
 }
