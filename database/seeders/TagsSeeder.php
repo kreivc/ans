@@ -20,9 +20,6 @@ class TagsSeeder extends Seeder
             ['tag_name' => 'Kimia'],
             ['tag_name' => 'Biologi'],
             ['tag_name' => 'Fisika'],
-            ['tag_name' => 'Data Structure'],
-            ['tag_name' => 'Coding'],
-            ['tag_name' => 'AVL'],
             ['tag_name' => 'Berhitung'],
         ]);
     }
